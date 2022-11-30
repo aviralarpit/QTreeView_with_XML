@@ -39,7 +39,7 @@ QVariant DomModel::data(const QModelIndex &index, int role) const
     const QDomNode node = item->node();
 
 
-    if ( role == Qt::CheckStateRole && index.column() == 0 )
+    if ( role == Qt::CheckStateRole && !index.parent().isValid() )          //updated this one for root checkbox
         return static_cast< int >( item->isChecked() ? Qt::Checked : Qt::Unchecked );
 
     if (role != Qt::DisplayRole)
