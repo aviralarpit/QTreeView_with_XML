@@ -1,3 +1,38 @@
+/*
+******************************************************************************
+* License Information: Accord Global Technology Solutions Private Limited.
+* 72 & 73, Krishna Reddy Colony, Domlur layout
+* Bangalore - 560071, INDIA
+* Licensed software and all rights reserved.
+******************************************************************************
+* File:
+*
+* Description:
+*
+* Compiler:
+*
+* Compiler options:
+*
+* Pragma:
+*
+* H/W platform:
+*
+* Portability:
+*
+* Author(s):            Arpit K @ AGTSPL
+*
+* Classes:
+*
+* References:
+*
+* Version History:
+* <Version Number> <Author> <date> <defect Number> <Modification made
+* and reason
+* for modification>
+* 1.1
+*****************************************************************************/
+
+
 #include "DomModel.h"
 #include "DOMItem.h"
 //#include "mainwindow.h"
@@ -38,10 +73,9 @@ QVariant DomModel::data(const QModelIndex &index, int role) const
     DomItem *item = static_cast<DomItem*>(index.internalPointer());
     const QDomNode node = item->node();
 
-
-    if ( role == Qt::CheckStateRole && !index.parent().isValid() )          //updated this one for root checkbox
+    if ( role == Qt::CheckStateRole && !index.parent().isValid()){
         return static_cast< int >( item->isChecked() ? Qt::Checked : Qt::Unchecked );
-
+}
     if (role != Qt::DisplayRole)
         return QVariant();
 
@@ -63,7 +97,9 @@ QVariant DomModel::data(const QModelIndex &index, int role) const
             return node.nodeValue().split('\n').join(' ');
         default:
             break;
+
     }
+
     return item->data(index.column());
 }
 
@@ -77,7 +113,6 @@ Qt::ItemFlags DomModel::flags(const QModelIndex &index) const
 
     if ( index.column() == 0 )
         flags |= Qt::ItemIsUserCheckable;
-
     return flags;
 }
 //! [6]
@@ -158,7 +193,7 @@ int DomModel::rowCount(const QModelIndex &parent) const
 bool DomModel::setData(const QModelIndex &index, const QVariant &value, int role) {
     DomItem *item = static_cast<DomItem*>(index.internalPointer());
 
-    if (index.column() == 0) {
+    if (index.column() == 0 ){
         if (role == Qt::EditRole) {
             return false;
         }
@@ -168,6 +203,7 @@ bool DomModel::setData(const QModelIndex &index, const QVariant &value, int role
             return true;
         }
     }
+
 
     return QAbstractItemModel::setData(index, value, role);
 }
