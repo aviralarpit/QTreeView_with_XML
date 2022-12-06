@@ -73,7 +73,10 @@ QVariant DomModel::data(const QModelIndex &index, int role) const
     DomItem *item = static_cast<DomItem*>(index.internalPointer());
     const QDomNode node = item->node();
 
-    if ( role == Qt::CheckStateRole && !index.parent().isValid()){
+   // if ( role == Qt::CheckStateRole && !index.parent().isValid())
+    //if ( role == Qt::CheckStateRole && index.column() == 0 )
+    if ( role == Qt::CheckStateRole && (index.column() == 0) && hasChildren(index) )
+    {
         return static_cast< int >( item->isChecked() ? Qt::Checked : Qt::Unchecked );
 }
     if (role != Qt::DisplayRole)
@@ -203,7 +206,5 @@ bool DomModel::setData(const QModelIndex &index, const QVariant &value, int role
             return true;
         }
     }
-
-
     return QAbstractItemModel::setData(index, value, role);
 }
