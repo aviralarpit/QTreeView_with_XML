@@ -73,12 +73,15 @@ QVariant DomModel::data(const QModelIndex &index, int role) const
     DomItem *item = static_cast<DomItem*>(index.internalPointer());
     const QDomNode node = item->node();
 
-   // if ( role == Qt::CheckStateRole && !index.parent().isValid())
-    //if ( role == Qt::CheckStateRole && index.column() == 0 )
     if ( role == Qt::CheckStateRole && (index.column() == 0) && hasChildren(index) )
     {
         return static_cast< int >( item->isChecked() ? Qt::Checked : Qt::Unchecked );
-}
+    }
+    if (role == Qt::FontRole && item->isChecked()) {
+            QFont font;
+            font.setBold(true);
+            return font;
+    }
     if (role != Qt::DisplayRole)
         return QVariant();
 
