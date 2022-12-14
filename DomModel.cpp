@@ -73,15 +73,21 @@ QVariant DomModel::data(const QModelIndex &index, int role) const
     DomItem *item = static_cast<DomItem*>(index.internalPointer());
     const QDomNode node = item->node();
 
+   // if ( role == Qt::CheckStateRole && !index.parent().isValid())
+    //if ( role == Qt::CheckStateRole && index.column() == 0 )
     if ( role == Qt::CheckStateRole && (index.column() == 0) && hasChildren(index) )
     {
         return static_cast< int >( item->isChecked() ? Qt::Checked : Qt::Unchecked );
-    }
-    if (role == Qt::FontRole && item->isChecked()) {
+}
+    if (role == Qt::FontRole && item->isChecked() && hasChildren(index)) {
             QFont font;
             font.setBold(true);
             return font;
     }
+    if (role == Qt::BackgroundRole && item->isChecked() && hasChildren(index) ){
+        return QColor(0,255,127);
+    }
+
     if (role != Qt::DisplayRole)
         return QVariant();
 
@@ -128,11 +134,11 @@ QVariant DomModel::headerData(int section, Qt::Orientation orientation,
     if (orientation == Qt::Horizontal && role == Qt::DisplayRole) {
         switch (section) {
             case 0:
-                return tr("Name");
+                return tr("Target Name \t \t \t");
             case 1:
-                return tr("Attributes");
+                return tr("Target Type\t\t");
             case 2:
-                return tr("Value");
+                return tr("IP Address\t");
             default:
                 break;
         }
